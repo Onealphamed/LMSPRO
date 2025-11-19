@@ -1428,7 +1428,139 @@
       .why-image {
         height: 200px;
       }
-    }
+   /* Base hamburger styles */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 4px 0;
+  background: #0f172a;
+  border-radius: 999px;
+  transition: transform 0.25s ease, opacity 0.25s ease, background 0.25s ease;
+}
+
+/* Animate to "X" when open */
+.nav-toggle.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* --- MOBILE LAYOUT --- */
+@media (max-width: 900px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  nav {
+    padding: 12px 0;
+  }
+
+  .nav-content {
+    position: relative;
+    gap: 12px;
+  }
+
+  .nav-toggle {
+    display: block;            /* show hamburger on mobile */
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 60px;                 /* just below navbar */
+    right: 8px;
+    left: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 10px 14px;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+    z-index: 99;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links button,
+  .nav-links .nav-cta-button {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .nav-links.open {
+    max-height: 400px;        /* enough for all items */
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Adjust hero text & spacing for small screens */
+  .hero {
+    padding: 72px 0 64px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .section-title {
+    font-size: 30px;
+    margin-bottom: 36px;
+  }
+
+  .section-subtitle {
+    margin-top: -20px;
+    margin-bottom: 40px;
+    font-size: 15px;
+    padding: 0 8px;
+  }
+
+  /* Tighten some card paddings on mobile */
+  .service-content,
+  .ai-feature-card,
+  .why-card,
+  .course-item,
+  .admin-content,
+  .contact-container,
+  .login-container {
+    padding: 20px;
+  }
+
+  .stats-banner {
+    padding: 28px 20px;
+  }
+}
+
+
+
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
@@ -1436,19 +1568,28 @@
  <body>
   <nav>
    <div class="container">
-    <div class="nav-content">
-     <div class="logo" onclick="navigateToPage('home')">
-      📚 LMS Pro
-     </div>
-     <ul class="nav-links">
-      <li><button id="nav-home" class="active" onclick="navigateToPage('home')">Home</button></li>
-      <li><button id="nav-features" onclick="navigateToPage('features')">Features</button></li>
-      <li><button id="nav-admin" onclick="navigateToPage('admin')">Admin Portal</button></li>
-      <li><button id="nav-student" onclick="navigateToPage('student')">Student Portal</button></li>
-      <li><span class="demo-badge">DEMO</span></li>
-      <li><button class="nav-cta-button" onclick="navigateToPage('contact')">Request Demo</button></li>
-     </ul>
-    </div>
+  <div class="nav-content">
+  <div class="logo" onclick="navigateToPage('home')">
+    📚 LMS Pro
+  </div>
+
+  <!-- NEW: mobile hamburger -->
+  <button class="nav-toggle" aria-label="Toggle navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <ul class="nav-links">
+    <li><button id="nav-home" class="active" onclick="navigateToPage('home')">Home</button></li>
+    <li><button id="nav-features" onclick="navigateToPage('features')">Features</button></li>
+    <li><button id="nav-admin" onclick="navigateToPage('admin')">Admin Portal</button></li>
+    <li><button id="nav-student" onclick="navigateToPage('student')">Student Portal</button></li>
+    <li><span class="demo-badge">DEMO</span></li>
+    <li><button class="nav-cta-button" onclick="navigateToPage('contact')">Request Demo</button></li>
+  </ul>
+</div>
+
    </div>
   </nav><!-- HOME PAGE -->
   <div id="page-home" class="page active">
@@ -3027,5 +3168,37 @@
       });
     }
   </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const navButtons = document.querySelectorAll('.nav-links button');
+
+    if (!navToggle || !navLinks) return;
+
+    navToggle.addEventListener('click', function () {
+      navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open');
+    });
+
+    // Close menu after clicking a nav item on mobile
+    navButtons.forEach((btn) => {
+      btn.addEventListener('click', function () {
+        if (window.innerWidth <= 900) {
+          navLinks.classList.remove('open');
+          navToggle.classList.remove('open');
+        }
+      });
+    });
+
+    // Optional: close menu if window is resized to desktop
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 900) {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+      }
+    });
+  });
+</script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a0ebe9633a03b49',t:'MTc2MzU0NTIwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
