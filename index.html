@@ -1464,10 +1464,13 @@
 
 /* --- MOBILE LAYOUT --- */
 @media (max-width: 900px) {
+
+  /* Container */
   .container {
     padding: 0 16px;
   }
 
+  /* Navbar */
   nav {
     padding: 12px 0;
   }
@@ -1477,13 +1480,38 @@
     gap: 12px;
   }
 
+  /* Show hamburger */
   .nav-toggle {
-    display: block;            /* show hamburger on mobile */
+    display: block;
   }
 
+  /* Hamburger lines */
+  .nav-toggle span {
+    width: 22px;
+    height: 2px;
+    margin: 4px 0;
+    background: #0f172a;
+    border-radius: 999px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  /* Hamburger → X animation */
+  .nav-toggle.open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .nav-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle.open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Dropdown menu container */
   .nav-links {
     position: absolute;
-    top: 60px;                 /* just below navbar */
+    top: 60px;
     right: 8px;
     left: 8px;
     flex-direction: column;
@@ -1495,8 +1523,8 @@
     box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
     pointer-events: none;
+    overflow: hidden;
     transition: max-height 0.3s ease, opacity 0.2s ease;
     z-index: 99;
   }
@@ -1512,13 +1540,20 @@
     justify-content: flex-start;
   }
 
+  /* Show dropdown when open */
   .nav-links.open {
-    max-height: 400px;        /* enough for all items */
+    max-height: 400px;
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Adjust hero text & spacing for small screens */
+  /* ⭐ FIX for active underline overlapping menu */
+  .nav-links button.active::after {
+    bottom: 0;       /* no more dropping below */
+    height: 2px;     /* thinner = cleaner on mobile */
+  }
+
+  /* Hero section */
   .hero {
     padding: 72px 0 64px;
   }
@@ -1531,6 +1566,7 @@
     font-size: 16px;
   }
 
+  /* Section titles */
   .section-title {
     font-size: 30px;
     margin-bottom: 36px;
@@ -1543,7 +1579,7 @@
     padding: 0 8px;
   }
 
-  /* Tighten some card paddings on mobile */
+  /* Card & content spacing */
   .service-content,
   .ai-feature-card,
   .why-card,
@@ -1554,11 +1590,11 @@
     padding: 20px;
   }
 
+  /* Stats banner */
   .stats-banner {
     padding: 28px 20px;
   }
 }
-
 
 
   </style>
